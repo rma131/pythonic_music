@@ -1,6 +1,7 @@
-# Pythonic music
+# Pythonic music 🐍🎶
 
 ## Teoría Musical como Metáfora de Programación Python.
+
 ### Donde cada concepto musical es explicado como un concepto de programación.
 
 Enseñando fundamentos musicales desde de forma metafórica a los conceptos de programación básica en python.
