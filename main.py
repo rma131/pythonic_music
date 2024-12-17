@@ -153,7 +153,7 @@ def demostracion_teoria_musical():
     """
     print("🎵 Teoría Musical: Metáfora Pythonica 🐍")
     input("Presiona Enter para comenzar...")
-    
+
     # Demostración de Escalas Modales
     print("\n🌈 Escalas: Secuencia de notas con diferentes intervalos.")
     escalas_modales = ['jonica', 'dorica', 'frigia', 'lidia', 'mixolidia', 'eolio', 'locrio', 'cromatica']
