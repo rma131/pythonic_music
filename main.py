@@ -1,4 +1,29 @@
-# Teoría Musical: Una Metáfora Pythonica
+# Teoría Musical: Una Metáfora Pythonica                             
+
+def print_pattern():
+    pattern = [
+"                                                           x                 ",
+"    xxx                                                  xxx   xxx          x",
+"    x xx                                               xxx x   xxx          x",
+"    x  x                                               x   x   x            x",
+"    xxxx                                               x xxx   x    xx      x",
+"     xx                                                x  xx   x   xxx      x",
+"    x                                                xxx       xx  x      xxx",
+"   x  x                                               xx        xx x       xx",
+"  xx   x            xxxxxx        xxx                            xxx         ",
+" xx   xxxxxxx       x    xx      xx xxx         xxx               xx         ",
+"      x x   xx     x      xx    xx    xx       xxxxx                         ",
+" x    x x x xx     x       xxxxxx       xxx xxxx                             ",
+" xx   xxx   x                             xxx                                ",
+"  xx    x xxx                                                                ",
+"   xxxxxxxx                                                                  ",
+"        x                                                                    ",
+"         x                                                                   ",
+"     xx xx                                                                   ",
+"       xx                                                                    "
+    ]
+    for line in pattern:
+        print(line)
 
 class TeoriaMusical:
     """
@@ -48,8 +73,6 @@ class TeoriaMusical:
         'locrio':    [0, 1, 3, 5, 6, 8, 10]   # Locrio (1, 2b, 3b, 4, 5b, 6b, 7b)
     }
     
-
-
 
     @classmethod
     def generar_escala(cls, nota_raiz, tipo='mayor'):
@@ -192,10 +215,13 @@ def demostracion_teoria_musical():
     Presentación Interactiva: Música como Código
     """
     print("🎵 Teoría Musical: Metáfora Pythonica 🐍\n")
+    print_pattern()
     input("Presiona Enter para comenzar...\n")
     print("\n")
     print("~"*75, end=" ")
     print("\n")
+
+    print("🔊 Cada nota representa una frecuencia que vibra en Hz. Estas frecuencias se relacionan matemáticamente de manera armónica o disonante.\n")
 
     # Mostrar notas disponibles
     print("\nNotas disponibles:")
