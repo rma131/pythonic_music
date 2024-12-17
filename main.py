@@ -218,8 +218,11 @@ def demostracion_teoria_musical():
     print("\n🎸🎵 Escalas: Secuencia de notas fija con intervalos establecidos.")
     print("... como las TUPLAS tienen un orden definido el cual les da su función. 🎵🐍")
     print("~"*75, end=" ")
+    print("\n ")
+    print(" "*16, end=" ")
+    print("I  |  II  |  III  |  IV |  V  |  VI  |  VI  |")
 
-    escalas_modales = ['jonica', 'dorica', 'frigia', 'lidia', 'mixolidia', 'eolio', 'locrio', 'cromatica']
+    escalas_modales = ['jonica', 'dorica', 'frigia', 'lidia', 'mixolidia', 'eolio', 'locrio']
     
     for modo in escalas_modales:
         escala = TeoriaMusical.generar_escala(nota_raiz, modo)
@@ -232,6 +235,7 @@ def demostracion_teoria_musical():
     print("\n🔊🎶 Relación de Armónicos Naturales:")
     print("Los armónicos se obtienen multiplicando la frecuencia de la tónica. Son el principio de la armonía musical y su relación matemática.🎼")
     print("~"*75, end=" ")
+    print("\n")
     
     armonicos = TeoriaMusical.generar_armonicos_basicos(nota_raiz)
     
