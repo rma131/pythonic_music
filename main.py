@@ -48,6 +48,9 @@ class TeoriaMusical:
         'locrio':    [0, 1, 3, 5, 6, 8, 10]   # Locrio (1, 2b, 3b, 4, 5b, 6b, 7b)
     }
     
+
+
+
     @classmethod
     def generar_escala(cls, nota_raiz, tipo='mayor'):
         """
@@ -75,6 +78,29 @@ class TeoriaMusical:
             for intervalo in cls.FORMULAS_ESCALAS.get(tipo, cls.FORMULAS_ESCALAS['mayor'])
         )
     
+    @classmethod
+    def generar_armonicos_basicos(cls, nota_raiz):
+        """
+        Genera armónicos básicos de la nota raíz con relaciones de frecuencia y semitonos.
+        """
+        # Encontrar índice de la nota raíz
+        indice_raiz = list(cls.ESCALA_CROMATIC.keys())[
+            list(cls.ESCALA_CROMATIC.values()).index(nota_raiz)
+        ]
+
+        # Función para obtener nota por intervalo
+        def nota_por_intervalo(intervalo):
+            return cls.ESCALA_CROMATIC[(indice_raiz + intervalo) % 12]
+
+        return {
+            'Tónica': nota_por_intervalo(0),        # Relación 1:1 (0 semitonos)
+            'Octava': nota_por_intervalo(12),       # Relación 2:1 (+12 semitonos)
+            'Quinta Justa': nota_por_intervalo(7),  # Relación 3:2 (+7 semitonos)
+            'Tercera Mayor': nota_por_intervalo(4)  # Relación 4:3 (+4 semitonos)
+        }
+
+
+
     @classmethod
     def generar_triadas_basicas(cls, nota_raiz):
         """
@@ -108,52 +134,68 @@ class TeoriaMusical:
         }
 
     @classmethod
-    def generar_acordes(cls, escala):
+    def generar_acordes_diatonicos(cls, escala):
         """
-        Acordes: Conjuntos de Tonos como Estructuras de Datos
-        
-        Demuestra:
-        - Diccionario como mapeo de nombres de acordes
-        - Set como colección única de tonos
-        - Derivación de acordes desde la escala
+        Genera un diccionario de acordes diatónicos clasificados por tipo, con nombres dinámicos.
         """
-        # Construcción de acordes diatónicos
-        return {
-            # Tríadas Diatónicas (Triadas de cada grado)
-            f'I - Mayor': set([escala[0], escala[2], escala[4]]),
-            f'ii - Menor': set([escala[1], escala[3], escala[5]]),
-            f'iii - Menor': set([escala[2], escala[4], escala[6]]),
-            f'IV - Mayor': set([escala[3], escala[5], escala[0]]),
-            f'V - Mayor': set([escala[4], escala[6], escala[1]]),
-            f'vi - Menor': set([escala[5], escala[0], escala[2]]),
-            f'vii° - Disminuido': set([escala[6], escala[1], escala[3]]),
-            
-            # Séptimas Diatónicas
-            f'I7 - Dominante': set([escala[0], escala[2], escala[4], escala[6]]),
-            f'ii7 - Menor': set([escala[1], escala[3], escala[5], escala[0]]),
-            f'vii°7 - Menor': set([escala[6], escala[1], escala[3], escala[5]]),
+        nombres_funcionales = {
+            'I': 'Tónica',
+            'ii': 'Supertónica',
+            'iii': 'Mediante',
+            'IV': 'Subdominante',
+            'V': 'Dominante',
+            'vi': 'Submediante',
+            'vii°': 'Sensible'
         }
-    
-    @staticmethod
-    def progresion_armonica(escala):
-        """
-        Progresión Armónica: Mapeo Funcional de Funciones Musicales
+        tipos_acordes = {
+            'I': 'Mayor', 'ii': 'Menor', 'iii': 'Menor',
+            'IV': 'Mayor', 'V': 'Mayor', 'vi': 'Menor', 'vii°': 'Disminuido'
+        }
 
-        Devuelve sets de los acordes
+        # Crear acordes con nombres dinámicos
+        acordes = {}
+        for i, grado in enumerate(['I', 'ii', 'iii', 'IV', 'V', 'vi', 'vii°']):
+            notas = [escala[i], escala[(i + 2) % 7], escala[(i + 4) % 7]]
+            tipo = tipos_acordes[grado]
+            nombre_acorde = f"{escala[i]} {tipo}"  # Nombre dinámico: "Do Mayor", "Re Menor", etc.
+            acordes[grado] = {
+                'notas': set(notas),
+                'nombre': nombre_acorde,
+                'funcion': nombres_funcionales[grado]
+            }
+        return acordes
+
+    @staticmethod
+    def generar_progresion_armonica(acordes_diatonicos, progresion):
+        """
+        Genera una progresión armónica basada en una secuencia de grados.
         """
         return {
-            'Tónica': set([escala[0], escala[2], escala[4]]),
-            'Subdominante': set([escala[3], escala[5], escala[0]]),
-            'Dominante': set([escala[4], escala[6], escala[1]])
+            grado: {
+                'nombre': acordes_diatonicos[grado]['nombre'],
+                'funcion': acordes_diatonicos[grado]['funcion'],
+                'notas': acordes_diatonicos[grado]['notas']
+            }
+            for grado in progresion
         }
-    
+
+PROGRESIONES_COMUNES = {
+    'Tónica-Subdominante-Dominante': ['I', 'IV', 'V'],
+    'ii-V-I': ['ii', 'V', 'I'],
+    'Cadencia Rota': ['V', 'vi'],
+    'Progresión Descendente': ['I', 'vii°', 'vi', 'V'],
+    'Circular': ['I', 'vi', 'ii', 'V']
+}
 
 def demostracion_teoria_musical():
     """
     Presentación Interactiva: Música como Código
     """
-    print("🎵 Teoría Musical: Metáfora Pythonica 🐍")
-    input("Presiona Enter para comenzar...")
+    print("🎵 Teoría Musical: Metáfora Pythonica 🐍\n")
+    input("Presiona Enter para comenzar...\n")
+    print("\n")
+    print("~"*75, end=" ")
+    print("\n")
 
     # Mostrar notas disponibles
     print("\nNotas disponibles:")
@@ -169,42 +211,78 @@ def demostracion_teoria_musical():
             break
         else:
             print("Nota no válida. Intenta de nuevo.")
+    print("\n")
+    print("~"*75, end=" ")
 
     # Demostración de Escalas Modales
-    print("\n🎸🎵 Escalas: Secuencia de notas con intervalos establecidos.")
-    print("... como las TUPLAS tienen un orden definido el cual les da su función. 🎵🐍 \n")
+    print("\n🎸🎵 Escalas: Secuencia de notas fija con intervalos establecidos.")
+    print("... como las TUPLAS tienen un orden definido el cual les da su función. 🎵🐍")
+    print("~"*75, end=" ")
+
     escalas_modales = ['jonica', 'dorica', 'frigia', 'lidia', 'mixolidia', 'eolio', 'locrio', 'cromatica']
     
     for modo in escalas_modales:
         escala = TeoriaMusical.generar_escala(nota_raiz, modo)
-        print(f"Escala {modo.capitalize()}: {escala}")
+        print(f"\nEscala {modo.capitalize()}: {escala}")
     
-    input("\nPresiona Enter para siguiente slide...")
+    input("\nPresiona Enter para seguir...\n")
+    print("~"*75, end=" ")
     
+    # Relación de Armónicos Naturales
+    print("\n🔊🎶 Relación de Armónicos Naturales:")
+    print("Los armónicos se obtienen multiplicando la frecuencia de la tónica. Son el principio de la armonía musical y su relación matemática.🎼")
+    print("~"*75, end=" ")
+    
+    armonicos = TeoriaMusical.generar_armonicos_basicos(nota_raiz)
+    
+    print(f"1️. Tónica: {armonicos['Tónica']}  (Relación 1:1, 0 semitonos)")
+    print(f"2️. Octava: {armonicos['Octava']}  (Relación 2:1, +12 semitonos)")
+    print(f"3️. Quinta Justa: {armonicos['Quinta Justa']}  (Relación 3:2, +7 semitonos)")
+    print(f"4️. Tercera Mayor: {armonicos['Tercera Mayor']}  (Relación 4:3, +4 semitonos)")
+
+    input("\nPresiona Enter para seguir...\n")
+    print("~"*75, end=" ")
+
+
     # Generar y mostrar triadas básicas
-    print("\n☘️🎶 Triadas Básicas: Conjuntos de notas resonantes entre sí con la misma tonalidad.")
+    print("\n🎸🎶 Triadas Básicas: Conjuntos de notas en armonía entre sí con la misma tonalidad.")
+    print("... como los SETS no se toma en cuenta ni el orden ni los duplicados. 🎵🐍")
+    print("~"*75, end=" ")
     triadas_basicas = TeoriaMusical.generar_triadas_basicas(nota_raiz)
     for nombre, acorde in triadas_basicas.items():
-        print(f"{nombre}: {acorde}")
+        print(f"\n{nombre}: {acorde}")
 
-    input("\nPresiona Enter para siguiente slide...")
+    input("\nPresiona Enter para seguir...\n")
+    print("~"*75, end=" ")
 
-    # Generación de Acordes Diatónicos de n Mayor
-    print("\n🎹🎶 Acordes Diatónicos: Conjuntos de notas resonantes entre sí dentro de la misma escala.")
-    escala_n_mayor = TeoriaMusical.generar_escala(nota_raiz)
-    acordes_n_mayor = TeoriaMusical.generar_acordes(escala_n_mayor)
+    # Generar Escala y Acordes Diatónicos
+    print("\n🎹🎶 Acordes Diatónicos: Diccionario de conjuntos de notas dentro de la escala de la tónica.")
+    print("~"*75, end=" ")
+    escala = TeoriaMusical.generar_escala(nota_raiz)
+    acordes_diatonicos = TeoriaMusical.generar_acordes_diatonicos(escala)
+
+    for grado, info in acordes_diatonicos.items():
+        print(f"\n{grado} ({info['funcion']}): {info['nombre']} - {info['notas']}")
+
+    input("\nPresiona Enter para seguir...\n")
+    print("~"*75, end=" ")
+
+    # Progresión Armónica basada en los Acordes Diatónicos
+    print("\n🌈🔀 Progresión Armónica: Combinación de acordes que en secucencia generan Tensión y Reposo usando la Tónica, Subdominante y Dominante.")
+    print("~"*75, end=" ")
     
-    for nombre, tonos in acordes_n_mayor.items():
-        print(f"{nombre}: {tonos}")
-    
-    input("\nPresiona Enter para siguiente slide...")
-    
-    # Progresión Armónica con Sets de Acordes
-    print("\n🌈🔀 Progresión Armónica: Secuencia de Acordes que generan tensión y reposo.")
-    progresion = TeoriaMusical.progresion_armonica(escala_n_mayor)
-    
-    for rol, acorde in progresion.items():
-        print(f"{rol}: {acorde}")
+    for nombre, grados in PROGRESIONES_COMUNES.items():
+        progresion = TeoriaMusical.generar_progresion_armonica(acordes_diatonicos, grados)
+        print(f"\n{nombre}:")
+        for grado, info in progresion.items():
+            print(f"  {grado} ({info['funcion']}): {info['nombre']} - {info['notas']}")
+
+    print("\n")
+    print("~"*75, end=" ")
+    print("\n")
+    input("\nPresiona Enter para salir...\n")
+
+
 
 # Punto de entrada
 if __name__ == "__main__":
