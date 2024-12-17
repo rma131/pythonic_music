@@ -73,34 +73,6 @@ class TeoriaMusical:
         'locrio':    [0, 1, 3, 5, 6, 8, 10]   # Locrio (1, 2b, 3b, 4, 5b, 6b, 7b)
     }
     
-
-    @classmethod
-    def generar_escala(cls, nota_raiz, tipo='mayor'):
-        """
-        Generación de Escala: Comprensión de Lista como Transformación Musical
-
-        Demuestra: 
-        - map() como transformador de secuencias
-        - list comprehension como filtro musical
-        - tuple como estructura inmutable de escala
-        """
-        # Encontrar índice de la nota raíz
-        indice_raiz = list(cls.ESCALA_CROMATIC.keys())[
-            list(cls.ESCALA_CROMATIC.values()).index(nota_raiz)
-        ]
-        
-        # Transformación funcional de intervalos
-        def mapear_nota(intervalo):
-            return cls.ESCALA_CROMATIC[
-                (indice_raiz + intervalo) % 12
-            ]
-        
-        # Conversión a tupla: estructura inmutable
-        return tuple(
-            mapear_nota(intervalo) 
-            for intervalo in cls.FORMULAS_ESCALAS.get(tipo, cls.FORMULAS_ESCALAS['mayor'])
-        )
-    
     @classmethod
     def generar_armonicos_basicos(cls, nota_raiz):
         """
@@ -121,8 +93,6 @@ class TeoriaMusical:
             'Quinta Justa': nota_por_intervalo(7),  # Relación 3:2 (+7 semitonos)
             'Tercera Mayor': nota_por_intervalo(4)  # Relación 4:3 (+4 semitonos)
         }
-
-
 
     @classmethod
     def generar_triadas_basicas(cls, nota_raiz):
@@ -156,6 +126,33 @@ class TeoriaMusical:
             ])
         }
 
+    @classmethod
+    def generar_escala(cls, nota_raiz, tipo='mayor'):
+        """
+        Generación de Escala: Comprensión de Lista como Transformación Musical
+
+        Demuestra: 
+        - map() como transformador de secuencias
+        - list comprehension como filtro musical
+        - tuple como estructura inmutable de escala
+        """
+        # Encontrar índice de la nota raíz
+        indice_raiz = list(cls.ESCALA_CROMATIC.keys())[
+            list(cls.ESCALA_CROMATIC.values()).index(nota_raiz)
+        ]
+        
+        # Transformación funcional de intervalos
+        def mapear_nota(intervalo):
+            return cls.ESCALA_CROMATIC[
+                (indice_raiz + intervalo) % 12
+            ]
+        
+        # Conversión a tupla: estructura inmutable
+        return tuple(
+            mapear_nota(intervalo) 
+            for intervalo in cls.FORMULAS_ESCALAS.get(tipo, cls.FORMULAS_ESCALAS['mayor'])
+        )
+    
     @classmethod
     def generar_acordes_diatonicos(cls, escala):
         """
@@ -240,6 +237,33 @@ def demostracion_teoria_musical():
     print("\n")
     print("~"*75, end=" ")
 
+    # Relación de Armónicos Naturales
+    print("\n🔊🎶 Relación de Armónicos Naturales:")
+    print("Los armónicos se obtienen multiplicando la frecuencia de la tónica. \nSon el principio de la armonía musical y su relación matemática.🎼")
+    print("~"*75, end=" ")
+    print("\n")
+    
+    armonicos = TeoriaMusical.generar_armonicos_basicos(nota_raiz)
+    
+    print(f"1️. Tónica: {armonicos['Tónica']}  (Relación 1:1, 0 semitonos)")
+    print(f"2️. Octava: {armonicos['Octava']}  (Relación 2:1, +12 semitonos)")
+    print(f"3️. Quinta Justa: {armonicos['Quinta Justa']}  (Relación 3:2, +7 semitonos)")
+    print(f"4️. Tercera Mayor: {armonicos['Tercera Mayor']}  (Relación 4:3, +4 semitonos)")
+
+    input("\nPresiona Enter para seguir...\n")
+    print("~"*75, end=" ")
+
+    # Generar y mostrar triadas básicas
+    print("\n🎸🎶 Triadas Básicas: Conjuntos de notas en armonía entre sí con la misma tonalidad.")
+    print("... como los SETS no se toma en cuenta ni el orden ni los duplicados. 🎵🐍")
+    print("~"*75, end=" ")
+    triadas_basicas = TeoriaMusical.generar_triadas_basicas(nota_raiz)
+    for nombre, acorde in triadas_basicas.items():
+        print(f"\n{nombre}: {acorde}")
+
+    input("\nPresiona Enter para seguir...\n")
+    print("~"*75, end=" ")
+
     # Demostración de Escalas Modales
     print("\n🎸🎵 Escalas: Secuencia de notas fija con intervalos establecidos.")
     print("... como las TUPLAS tienen un orden definido el cual les da su función. 🎵🐍")
@@ -257,34 +281,6 @@ def demostracion_teoria_musical():
     input("\nPresiona Enter para seguir...\n")
     print("~"*75, end=" ")
     
-    # Relación de Armónicos Naturales
-    print("\n🔊🎶 Relación de Armónicos Naturales:")
-    print("Los armónicos se obtienen multiplicando la frecuencia de la tónica. Son el principio de la armonía musical y su relación matemática.🎼")
-    print("~"*75, end=" ")
-    print("\n")
-    
-    armonicos = TeoriaMusical.generar_armonicos_basicos(nota_raiz)
-    
-    print(f"1️. Tónica: {armonicos['Tónica']}  (Relación 1:1, 0 semitonos)")
-    print(f"2️. Octava: {armonicos['Octava']}  (Relación 2:1, +12 semitonos)")
-    print(f"3️. Quinta Justa: {armonicos['Quinta Justa']}  (Relación 3:2, +7 semitonos)")
-    print(f"4️. Tercera Mayor: {armonicos['Tercera Mayor']}  (Relación 4:3, +4 semitonos)")
-
-    input("\nPresiona Enter para seguir...\n")
-    print("~"*75, end=" ")
-
-
-    # Generar y mostrar triadas básicas
-    print("\n🎸🎶 Triadas Básicas: Conjuntos de notas en armonía entre sí con la misma tonalidad.")
-    print("... como los SETS no se toma en cuenta ni el orden ni los duplicados. 🎵🐍")
-    print("~"*75, end=" ")
-    triadas_basicas = TeoriaMusical.generar_triadas_basicas(nota_raiz)
-    for nombre, acorde in triadas_basicas.items():
-        print(f"\n{nombre}: {acorde}")
-
-    input("\nPresiona Enter para seguir...\n")
-    print("~"*75, end=" ")
-
     # Generar Escala y Acordes Diatónicos
     print("\n🎹🎶 Acordes Diatónicos: Diccionario de conjuntos de notas dentro de la escala de la tónica.")
     print("~"*75, end=" ")
