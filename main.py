@@ -76,7 +76,7 @@ class TeoriaMusical:
         )
     
     @classmethod
-    def generar_acordes_basicos(cls, nota_raiz):
+    def generar_triadas_basicas(cls, nota_raiz):
         """
         Genera acordes básicos (Mayor, Menor, Disminuido) para una nota raíz
         """
@@ -146,6 +146,7 @@ class TeoriaMusical:
             'Subdominante': set([escala[3], escala[5], escala[0]]),
             'Dominante': set([escala[4], escala[6], escala[1]])
         }
+    
 
 def demostracion_teoria_musical():
     """
@@ -154,29 +155,53 @@ def demostracion_teoria_musical():
     print("🎵 Teoría Musical: Metáfora Pythonica 🐍")
     input("Presiona Enter para comenzar...")
 
+    # Mostrar notas disponibles
+    print("\nNotas disponibles:")
+    for nota in TeoriaMusical.ESCALA_CROMATIC.values():
+        print(nota, end=" ")
+    print("\n")
+    
+    # Entrada de la tonalidad
+    while True:
+        nota_raiz = input("Ingresa la nota raíz🎼: ").capitalize()
+        
+        if nota_raiz in TeoriaMusical.ESCALA_CROMATIC.values():
+            break
+        else:
+            print("Nota no válida. Intenta de nuevo.")
+
     # Demostración de Escalas Modales
-    print("\n🌈 Escalas: Secuencia de notas con diferentes intervalos.")
+    print("\n🎸🎵 Escalas: Secuencia de notas con intervalos establecidos.")
+    print("... como las TUPLAS tienen un orden definido el cual les da su función. 🎵🐍 \n")
     escalas_modales = ['jonica', 'dorica', 'frigia', 'lidia', 'mixolidia', 'eolio', 'locrio', 'cromatica']
     
     for modo in escalas_modales:
-        escala = TeoriaMusical.generar_escala('Do', modo)
+        escala = TeoriaMusical.generar_escala(nota_raiz, modo)
         print(f"Escala {modo.capitalize()}: {escala}")
     
     input("\nPresiona Enter para siguiente slide...")
     
-    # Generación de Acordes Diatónicos de Do Mayor
-    print("\n🎸 Acordes Diatónicos: Conjuntos de notas resonantes entre sí.")
-    escala_do_mayor = TeoriaMusical.generar_escala('Do')
-    acordes_do_mayor = TeoriaMusical.generar_acordes(escala_do_mayor)
+    # Generar y mostrar triadas básicas
+    print("\n☘️🎶 Triadas Básicas: Conjuntos de notas resonantes entre sí con la misma tonalidad.")
+    triadas_basicas = TeoriaMusical.generar_triadas_basicas(nota_raiz)
+    for nombre, acorde in triadas_basicas.items():
+        print(f"{nombre}: {acorde}")
+
+    input("\nPresiona Enter para siguiente slide...")
+
+    # Generación de Acordes Diatónicos de n Mayor
+    print("\n🎹🎶 Acordes Diatónicos: Conjuntos de notas resonantes entre sí dentro de la misma escala.")
+    escala_n_mayor = TeoriaMusical.generar_escala(nota_raiz)
+    acordes_n_mayor = TeoriaMusical.generar_acordes(escala_n_mayor)
     
-    for nombre, tonos in acordes_do_mayor.items():
+    for nombre, tonos in acordes_n_mayor.items():
         print(f"{nombre}: {tonos}")
     
     input("\nPresiona Enter para siguiente slide...")
     
     # Progresión Armónica con Sets de Acordes
-    print("\n🌟 Progresión Armónica: Secuencia de Acordes que generan tensión y reposo.")
-    progresion = TeoriaMusical.progresion_armonica(escala_do_mayor)
+    print("\n🌈🔀 Progresión Armónica: Secuencia de Acordes que generan tensión y reposo.")
+    progresion = TeoriaMusical.progresion_armonica(escala_n_mayor)
     
     for rol, acorde in progresion.items():
         print(f"{rol}: {acorde}")
